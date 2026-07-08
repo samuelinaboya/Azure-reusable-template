@@ -1,4 +1,4 @@
-name: "Terraform Multi-Cloud Automation"
+name: "Terraform Azure Automation"
 
 on:
   workflow_dispatch:
@@ -17,34 +17,23 @@ on:
         required: false
         default: "latest"
         type: string
-      directory:
-        description: "Root directory of the Terraform configuration (e.g., gcp/ or azure/)"
-        required: false
-        default: "."
-        type: string
       workspace:
-        description: "Select the target Terraform Workspace"
+        description: "Select the target Azure Workspace"
         required: true
-        default: "gcp-prod"
+        default: "azure-dev"
         type: choice
         options:
-          - gcp-prod
-          - gcp-dev
-          - azure-prod
           - azure-dev
+          - azure-prod
 
 jobs:
   terraform:
-    name: "TF ${{ github.event.inputs.action }} (${{ github.event.inputs.workspace }})"
+    name: "Azure TF ${{ github.event.inputs.action }} (${{ github.event.inputs.workspace }})"
     runs-on: ubuntu-latest
 
     env:
       TF_VAR_image_tag: ${{ github.event.inputs.image_tag }}
       TF_WORKSPACE: ${{ github.event.inputs.workspace }}
-
-    defaults:
-      run:
-        working-directory: ${{ github.event.inputs.directory }}
 
     steps:
       - name: Checkout Code
